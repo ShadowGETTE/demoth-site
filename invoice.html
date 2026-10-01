@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Демонстрационный счёт — B2B кабинет</title>
+  <style>
+    :root{--ink:#18181b;--muted:#6f6e76;--line:#d8d7d2;--paper:#fff;--bg:#f2f2ef;--purple:#6155d6;--lime:#c8ff3d}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.4}
+    button,a{font:inherit}.toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:12px 24px;background:rgba(250,250,248,.94);border-bottom:1px solid #deddd8;backdrop-filter:blur(18px)}
+    .toolbar a{color:var(--ink);font-weight:750;text-decoration:none}.toolbar-actions{display:flex;gap:10px;margin-left:auto}.btn{min-height:42px;border:0;border-radius:11px;padding:0 16px;font-weight:800;cursor:pointer}.btn.secondary{background:#e9e8e4}.btn.primary{background:var(--ink);color:#fff}
+    .sheet{position:relative;width:min(900px,calc(100% - 28px));min-height:1180px;margin:28px auto 50px;padding:62px 68px;background:var(--paper);box-shadow:0 22px 70px rgba(26,24,34,.12);overflow:hidden}
+    .watermark{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%) rotate(-24deg);font-size:76px;font-weight:900;letter-spacing:.12em;color:rgba(97,85,214,.07);white-space:nowrap;pointer-events:none}
+    .demo-badge{display:inline-flex;padding:7px 11px;border-radius:99px;background:#efedff;color:#4438b8;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .head{display:flex;justify-content:space-between;gap:30px;align-items:start;margin:20px 0 34px}.head h1{margin:0;font-size:34px;line-height:1.08}.head p{margin:8px 0 0;color:var(--muted)}.sum-box{text-align:right}.sum-box span{display:block;color:var(--muted);font-size:13px}.sum-box strong{display:block;margin-top:4px;font-size:28px}
+    .parties{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}.party{padding:18px;border:1px solid var(--line);border-radius:14px}.party span{display:block;margin-bottom:8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}.party strong{display:block}.party small{display:block;margin-top:6px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse;margin-top:24px;font-size:14px}th,td{padding:13px 10px;border:1px solid var(--line);vertical-align:top}th{background:#f2f1ee;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.04em}th:nth-child(1),td:nth-child(1){width:42px;text-align:center}th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){text-align:right;white-space:nowrap}
+    .totals{width:360px;margin:22px 0 0 auto}.total-row{display:flex;justify-content:space-between;gap:20px;padding:7px 0}.total-row.final{margin-top:7px;padding-top:13px;border-top:2px solid var(--ink);font-size:22px;font-weight:900}
+    .notice{margin-top:34px;padding:16px 18px;border-left:5px solid var(--lime);background:#f7f7f4;font-size:13px}.notice strong{display:block;margin-bottom:4px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:46px;margin-top:70px}.signature{padding-top:30px;border-top:1px solid var(--ink);font-size:13px;color:var(--muted)}
+    .footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+    @media(max-width:720px){.toolbar{padding:10px 14px}.toolbar a{font-size:0}.toolbar a::before{content:"←";font-size:20px}.btn{padding:0 12px}.sheet{min-height:0;margin:12px auto 28px;padding:28px 20px}.head,.parties{grid-template-columns:1fr;display:grid}.sum-box{text-align:left}.watermark{font-size:42px}.totals{width:100%}.signatures{gap:20px}.parties{grid-template-columns:1fr}.head h1{font-size:27px}table{font-size:12px}th,td{padding:8px 5px}}
+    @media print{body{background:#fff}.toolbar{display:none}.sheet{width:100%;min-height:auto;margin:0;padding:18mm 16mm;box-shadow:none}.watermark{color:rgba(97,85,214,.06)}@page{size:A4;margin:0}}
+  </style>
+</head>
+<body>
+  <header class="toolbar">
+    <a href="payment.html">← Вернуться к оплате</a>
+    <div class="toolbar-actions"><button class="btn secondary" id="backToCatalog" type="button">В каталог</button><button class="btn primary" id="printInvoice" type="button">Скачать / печать PDF</button></div>
+  </header>
+  <main class="sheet">
+    <div class="watermark">ДЕМО · НЕ ДЛЯ ОПЛАТЫ</div>
+    <span class="demo-badge">Демонстрационный документ</span>
+    <section class="head">
+      <div><h1 id="invoiceTitle">Счёт № DEMO-1049</h1><p id="invoiceDate"></p></div>
+      <div class="sum-box"><span>К оплате</span><strong id="invoiceTotalTop">0 ₽</strong></div>
+    </section>
+    <section class="parties">
+      <div class="party"><span>Поставщик</span><strong>Демонстрационный поставщик оборудования</strong><small>Реквизиты не являются платёжными и будут поступать из учётной системы.</small></div>
+      <div class="party"><span>Покупатель</span><strong>ООО «Студия красоты»</strong><small>Демонстрационная карточка партнёра</small></div>
+    </section>
+    <table>
+      <thead><tr><th>№</th><th>Наименование</th><th>Артикул</th><th>Кол-во</th><th>Цена, ₽</th><th>Сумма, ₽</th></tr></thead>
+      <tbody id="invoiceItems"></tbody>
+    </table>
+    <section class="totals"><div class="total-row"><span>Позиций</span><strong id="invoiceQty">0</strong></div><div class="total-row final"><span>Итого</span><span id="invoiceTotal">0 ₽</span></div></section>
+    <div class="notice"><strong>Важно</strong>Это демонстрационная печатная форма. Документ не содержит реальных реквизитов, НДС, условий поставки и не может использоваться для оплаты.</div>
+    <section class="signatures"><div class="signature">Поставщик</div><div class="signature">Покупатель</div></section>
+    <div class="footer">В рабочей версии номер, реквизиты, ставка НДС, сроки и статус оплаты формируются в согласованной учётной системе и возвращаются в B2B-кабинет.</div>
+  </main>
+  <script>
+    const fallback={number:'1049',items:[{name:'Лампа для маникюра RAY',sku:'RAY-LAMP-01',price:6490,qty:1}],qty:1,total:6490};
+    let order=fallback;
+    try{const saved=JSON.parse(localStorage.getItem('b2bDemoOrder'));if(saved&&Array.isArray(saved.items)&&saved.items.length)order=saved}catch(e){}
+    const money=n=>new Intl.NumberFormat('ru-RU').format(Number(n)||0)+' ₽';
+    const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const date=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
+    document.getElementById('invoiceTitle').textContent='Счёт № DEMO-'+order.number;
+    document.getElementById('invoiceDate').textContent='от '+date;
+    document.getElementById('invoiceTotalTop').textContent=money(order.total);
+    document.getElementById('invoiceTotal').textContent=money(order.total);
+    document.getElementById('invoiceQty').textContent=order.qty;
+    document.getElementById('invoiceItems').innerHTML=order.items.map((item,index)=>`<tr><td>${index+1}</td><td><strong>${safe(item.name)}</strong></td><td>${safe(item.sku)}</td><td>${item.qty}</td><td>${money(item.price).replace(' ₽','')}</td><td><strong>${money(item.price*item.qty).replace(' ₽','')}</strong></td></tr>`).join('');
+    document.getElementById('printInvoice').onclick=()=>window.print();
+    document.getElementById('backToCatalog').onclick=()=>location.href='index.html';
+  </script>
+</body>
+</html>
+
+
+[executed on device: mikrolab (3a2bcc24-b4fd-4f1f-b3db-4a316e15f5f7)]
