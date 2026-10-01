@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="Демонстрационная страница выбора способа оплаты B2B-заказа.">
+  <title>Оплата заказа — B2B кабинет</title>
+  <style>
+    :root{
+      --ink:#18181b;--muted:#72717a;--line:#e7e6e2;--bg:#f4f4f1;--white:#fff;
+      --purple:#6155d6;--purple-dark:#4438b8;--purple-soft:#efedff;--lime:#c8ff3d;
+      --green:#167a55;--green-soft:#e8f7ef;--shadow:0 18px 54px rgba(25,22,42,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:radial-gradient(circle at 52% -20%,#fff 0,#f5f5f2 44%,#eeeeeb 100%);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45;letter-spacing:-.008em}
+    button,input{font:inherit}button{cursor:pointer}
+    .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:22px;min-height:72px;padding:12px 32px;background:rgba(250,250,248,.9);border-bottom:1px solid rgba(30,30,35,.07);backdrop-filter:blur(22px) saturate(150%)}
+    .back{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;font-weight:750;font-size:14px}
+    .back span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#eae9e5;font-size:18px}
+    .steps{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--muted);font-size:13px}
+    .step{display:flex;align-items:center;gap:7px}.step b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#e7e6e2;color:#66646d;font-size:11px}.step.done b{background:var(--ink);color:white}.step.active{color:var(--ink);font-weight:800}.step.active b{background:var(--lime);color:var(--ink)}.step-line{width:28px;height:1px;background:#d7d5d0}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;width:min(1160px,calc(100% - 40px));margin:32px auto 52px}
+    .checkout,.summary{background:var(--white);border:1px solid rgba(28,28,32,.07);border-radius:26px;box-shadow:var(--shadow)}
+    .checkout{padding:30px}.summary{position:sticky;top:96px;align-self:start;padding:23px}
+    .order-label{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:99px;background:var(--purple-soft);color:var(--purple-dark);font-size:12px;font-weight:850}
+    .order-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--purple)}
+    h1{margin:16px 0 7px;font-size:36px;line-height:1.08;letter-spacing:-.045em}h2{margin:0;font-size:22px;letter-spacing:-.03em}p{margin:0}.lead{color:var(--muted);max-width:650px}
+    .method-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:26px 0 22px}
+    .method{display:grid;gap:8px;min-height:112px;padding:15px;text-align:left;border:1px solid var(--line);border-radius:17px;background:white;color:var(--ink);outline:none;transition:.18s ease}
+    .method:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(25,22,42,.07)}.method.active{border-color:var(--purple);background:linear-gradient(145deg,#fbfaff,#f0eeff);box-shadow:0 0 0 3px rgba(97,85,214,.10)}
+    .method:focus-visible{outline:3px solid rgba(97,85,214,.24);outline-offset:2px}
+    .method-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#f0efeb;font-size:16px;font-weight:900}.method.active .method-icon{background:var(--purple);color:white}.method strong{font-size:14px}.method small{color:var(--muted);line-height:1.25}
+    .payment-panel{display:none;border:1px solid var(--line);border-radius:21px;background:#fafaf8;padding:22px}.payment-panel.active{display:block;animation:fade .18s ease}@keyframes fade{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .panel-head{display:flex;justify-content:space-between;align-items:start;gap:20px;margin-bottom:18px}.panel-head p{margin-top:4px;color:var(--muted);font-size:14px}.secure{display:inline-flex;align-items:center;gap:7px;color:var(--green);font-size:12px;font-weight:800;white-space:nowrap}.secure::before{content:"✓";display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--green-soft)}
+    .provider-card{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px;border-radius:17px;background:white;border:1px solid var(--line)}
+    .provider-card strong{display:block}.provider-card span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.cards{display:flex;gap:6px}.card-mark{display:grid;place-items:center;min-width:43px;height:28px;padding:0 7px;border:1px solid var(--line);border-radius:7px;background:#fafafa;font-size:10px;font-weight:900;color:#55525f}
+    .notice{margin-top:14px;padding:14px 15px;border-radius:14px;background:#f0efeb;color:#68666f;font-size:13px}
+    .primary{width:100%;min-height:52px;margin-top:18px;border:0;border-radius:14px;background:var(--ink);color:white;font-weight:850;box-shadow:0 12px 28px rgba(20,20,24,.16);transition:.18s ease}.primary:hover{transform:translateY(-1px);background:#29282d}.primary:focus{outline:4px solid rgba(97,85,214,.16)}
+    .sbp-grid{display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:center}.qr{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;background:white;border:10px solid white;box-shadow:0 8px 28px rgba(25,22,42,.08);overflow:hidden}.qr svg{width:100%;height:100%}.sbp-copy ol{margin:10px 0 0;padding-left:20px;color:var(--muted);font-size:14px}.sbp-copy li+li{margin-top:5px}
+    .invoice-card{display:grid;gap:13px;padding:18px;border-radius:17px;background:white;border:1px solid var(--line)}.invoice-row{display:flex;justify-content:space-between;gap:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}.invoice-row:last-child{padding:0;border:0}.invoice-row span{color:var(--muted);font-size:13px}.invoice-row strong{text-align:right;font-size:14px}
+    .summary-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.summary-head span{color:var(--muted);font-size:13px}.items{display:grid;gap:13px}.item{display:grid;grid-template-columns:1fr auto;gap:12px;padding-bottom:13px;border-bottom:1px solid var(--line)}.item strong{font-size:14px;line-height:1.3}.item small{display:block;margin-top:4px;color:var(--muted)}.item-price{font-weight:800;white-space:nowrap;font-size:14px}
+    .totals{display:grid;gap:9px;margin-top:16px}.row{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px}.row.total{margin-top:5px;padding-top:15px;border-top:1px solid var(--line);font-size:22px;font-weight:900;color:var(--ink)}
+    .summary-note{margin-top:17px;padding:13px;border-radius:13px;background:#f4f3ef;color:var(--muted);font-size:12px}.summary-note b{color:var(--ink)}
+    .demo-note{display:flex;gap:10px;margin-top:20px;color:var(--muted);font-size:12px}.demo-note b{display:grid;place-items:center;flex:0 0 22px;height:22px;border-radius:50%;background:#e9e8e4;color:var(--ink)}
+    .success{display:none;position:fixed;inset:0;z-index:50;place-items:center;padding:20px;background:rgba(16,15,21,.66)}.success.show{display:grid}.success-card{width:min(470px,100%);padding:30px;border-radius:28px;background:white;box-shadow:0 28px 90px rgba(0,0,0,.25);text-align:center;animation:pop .22s ease}@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}.success-icon{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 16px;border-radius:20px;background:var(--lime);font-size:28px;font-weight:900}.success-card h2{font-size:27px}.success-card p{margin:8px auto 0;max-width:360px;color:var(--muted)}.success-card .primary{margin-top:22px}.link-btn{margin-top:10px;border:0;background:transparent;color:var(--purple);font-weight:800}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.summary{position:static;order:-1}.summary .items{display:none}.summary-note{display:none}}
+    @media(max-width:650px){.topbar{padding:10px 14px;min-height:62px}.back{font-size:0}.back span{font-size:18px}.steps{gap:5px}.step{font-size:0}.step b{font-size:11px}.step-line{width:18px}.layout{width:calc(100% - 24px);margin:18px auto 34px;gap:12px}.checkout,.summary{border-radius:21px}.checkout{padding:20px 16px}.summary{padding:17px}h1{font-size:30px}.method-list{grid-template-columns:1fr;margin:20px 0 16px}.method{grid-template-columns:38px 1fr;align-items:center;min-height:0;padding:12px}.method small{grid-column:2}.payment-panel{padding:17px 14px}.panel-head{display:block}.secure{margin-top:10px}.provider-card{display:block}.cards{margin-top:14px}.sbp-grid{grid-template-columns:1fr}.qr{width:156px;margin:0 auto}.invoice-row{display:grid;gap:4px}.invoice-row strong{text-align:left}.success-card{padding:25px 20px;border-radius:24px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html"><span>←</span>Вернуться в каталог</a>
+    <div class="steps" aria-label="Этапы оформления">
+      <span class="step done"><b>✓</b>Корзина</span><i class="step-line"></i>
+      <span class="step done"><b>✓</b>Оформление</span><i class="step-line"></i>
+      <span class="step active"><b>3</b>Оплата</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="checkout">
+      <span class="order-label" id="orderLabel">Заказ № 1049</span>
+      <h1>Выберите способ оплаты</h1>
+      <p class="lead">Сумма заказа уже зафиксирована. Выберите удобный вариант — способ можно изменить до подтверждения.</p>
+
+      <div class="method-list" role="tablist" aria-label="Способы оплаты">
+        <button class="method active" type="button" role="tab" aria-selected="true" data-method="card"><span class="method-icon">▰</span><strong>Банковская карта</strong><small>Быстро и безопасно</small></button>
+        <button class="method" type="button" role="tab" aria-selected="false" data-method="sbp"><span class="method-icon">СБП</span><strong>Система быстрых платежей</strong><small>По QR-коду или ссылке</small></button>
+        <button class="method" type="button" role="tab" aria-selected="false" data-method="invoice"><span class="method-icon">₽</span><strong>Расчётный счёт</strong><small>Счёт для компании или ИП</small></button>
+      </div>
+
+      <div class="payment-panel active" data-panel="card">
+        <div class="panel-head"><div><h2>Оплата банковской картой</h2><p>После подтверждения откроется защищённая страница банка.</p></div><span class="secure">Данные защищены</span></div>
+        <div class="provider-card"><div><strong>Карты российских банков</strong><span>Карточные данные не вводятся и не хранятся в кабинете</span></div><div class="cards"><span class="card-mark">МИР</span><span class="card-mark">BANK</span></div></div>
+        <div class="notice">Демонстрационный режим: реальное списание не производится. Эквайринг подключается после выбора банка или платёжного провайдера.</div>
+        <button class="primary pay-action" type="button">Перейти к оплате · <span data-total></span></button>
+      </div>
+
+      <div class="payment-panel" data-panel="sbp">
+        <div class="panel-head"><div><h2>Оплата через СБП</h2><p>Откройте приложение банка и подтвердите платёж.</p></div><span class="secure">Без комиссии в демо</span></div>
+        <div class="sbp-grid">
+          <div class="qr" aria-label="Демонстрационный QR-код СБП">
+            <svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="10" fill="#fff"/><g fill="#18181b"><path d="M8 8h34v34H8zm7 7v20h20V15zM78 8h34v34H78zm7 7v20h20V15zM8 78h34v34H8zm7 7v20h20V85z"/><path d="M51 9h10v10H51zm12 12h11v11H63zM48 37h12v13H48zm17 5h9v9h-9zM79 52h11v11H79zm15 0h9v20h-9zM49 58h20v10H49zm2 16h9v9h-9zm14 0h10v20H65zm16 5h9v9h-9zm15 2h16v10H96zm-15 15h10v16H81zm16 2h15v14H97zM49 97h11v15H49z"/></g><rect x="43" y="43" width="34" height="34" rx="10" fill="#6155d6"/><text x="60" y="64" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">СБП</text></svg>
+          </div>
+          <div class="sbp-copy"><strong>Как оплатить</strong><ol><li>Нажмите кнопку ниже.</li><li>Выберите приложение своего банка.</li><li>Проверьте сумму и подтвердите оплату.</li></ol></div>
+        </div>
+        <div class="notice">QR-код демонстрационный и не содержит платёжных реквизитов.</div>
+        <button class="primary pay-action" type="button">Открыть СБП · <span data-total></span></button>
+      </div>
+
+      <div class="payment-panel" data-panel="invoice">
+        <div class="panel-head"><div><h2>Оплата по расчётному счёту</h2><p>Подходит для юридических лиц и индивидуальных предпринимателей.</p></div><span class="secure">Документы в кабинете</span></div>
+        <div class="invoice-card">
+          <div class="invoice-row"><span>Плательщик</span><strong>ООО «Студия красоты»</strong></div>
+          <div class="invoice-row"><span>Назначение</span><strong>Оплата оборудования по заказу <span id="invoiceOrder">№ 1049</span></strong></div>
+          <div class="invoice-row"><span>Срок оплаты</span><strong>Будет указан в сформированном счёте</strong></div>
+        </div>
+        <div class="notice">В демонстрации создаётся печатная форма счёта с пометкой «Не для оплаты». В рабочей версии реквизиты и номер документа будут поступать из согласованной учётной системы.</div>
+        <button class="primary pay-action" type="button">Сформировать демо-счёт · <span data-total></span></button>
+      </div>
+
+      <div class="demo-note"><b>i</b><span>Это демонстрационный MVP. Страница не запрашивает данные карты, не создаёт реальный QR-код и не проводит платёж. Счёт формируется только как демонстрационный документ.</span></div>
+    </section>
+
+    <aside class="summary">
+      <div class="summary-head"><h2>Ваш заказ</h2><span id="summaryNumber">№ 1049</span></div>
+      <div class="items" id="orderItems"></div>
+      <div class="totals"><div class="row"><span>Товаров</span><strong id="orderQty">0</strong></div><div class="row total"><span>Итого</span><span id="orderTotal">0 ₽</span></div></div>
+      <div class="summary-note"><b>Важно:</b> доставка, НДС и условия оплаты будут рассчитываться по согласованным правилам поставщика.</div>
+    </aside>
+  </main>
+
+  <div class="success" id="success" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="success-card"><div class="success-icon">✓</div><h2 id="successTitle">Способ оплаты выбран</h2><p id="successText"></p><button class="primary" id="backToOrder" type="button">Вернуться к заказу</button><button class="link-btn" id="closeSuccess" type="button">Изменить способ оплаты</button></div>
+  </div>
+
+  <script>
+    const fallback={number:'1049',items:[{name:'Лампа для маникюра RAY',sku:'RAY-LAMP-01',price:6490,qty:1}],qty:1,total:6490};
+    let order=fallback;
+    try{const saved=JSON.parse(localStorage.getItem('b2bDemoOrder'));if(saved&&Array.isArray(saved.items)&&saved.total>=3000)order=saved}catch(e){}
+    const money=n=>new Intl.NumberFormat('ru-RU').format(n)+' ₽';
+    const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    document.getElementById('orderLabel').textContent='Заказ № '+order.number;
+    document.getElementById('summaryNumber').textContent='№ '+order.number;
+    document.getElementById('invoiceOrder').textContent='№ '+order.number;
+    document.getElementById('orderQty').textContent=order.qty;
+    document.getElementById('orderTotal').textContent=money(order.total);
+    document.querySelectorAll('[data-total]').forEach(el=>el.textContent=money(order.total));
+    document.getElementById('orderItems').innerHTML=order.items.map(item=>`<div class="item"><div><strong>${safe(item.name)}</strong><small>${safe(item.sku)} · ${item.qty} шт.</small></div><span class="item-price">${money(item.price*item.qty)}</span></div>`).join('');
+
+    let selectedMethod='card';
+    const methodText={card:'В рабочей версии откроется защищённая платёжная страница банка. Реальное списание в демонстрации не выполняется.',sbp:'В рабочей версии откроется приложение банка или платёжный QR-код. Текущий QR-код демонстрационный.',invoice:'Сформирован демонстрационный счёт с позициями заказа и суммами в рублях.'};
+    document.querySelectorAll('[data-method]').forEach(button=>button.onclick=()=>{selectedMethod=button.dataset.method;document.querySelectorAll('[data-method]').forEach(el=>{const active=el===button;el.classList.toggle('active',active);el.setAttribute('aria-selected',active)});document.querySelectorAll('[data-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.panel===selectedMethod))});
+    const showResult=()=>{if(selectedMethod==='invoice'){localStorage.setItem('b2bDemoOrder',JSON.stringify(order));location.href='invoice.html';return}document.getElementById('successText').textContent=methodText[selectedMethod];document.getElementById('success').classList.add('show');document.body.style.overflow='hidden'};
+    const closeResult=()=>{document.getElementById('success').classList.remove('show');document.body.style.overflow=''};
+    document.querySelectorAll('.pay-action').forEach(button=>button.onclick=showResult);
+    document.getElementById('closeSuccess').onclick=closeResult;
+    document.getElementById('backToOrder').onclick=()=>location.href='index.html';
+    document.getElementById('success').onclick=e=>{if(e.target.id==='success')closeResult()};
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeResult()});
+  </script>
+</body>
+</html>
+
+
+[executed on device: mikrolab (3a2bcc24-b4fd-4f1f-b3db-4a316e15f5f7)]
