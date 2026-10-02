@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="description" content="B2B-кабинет для заказа профессионального оборудования и расходных материалов для салонов красоты.">
+  <link rel="icon" href="data:,">
   <title>B2B кабинет — профессиональный каталог</title>
+  <link rel="stylesheet" href="partner-mvp.css">
   <style>
     :root{
       --th-purple:#52478a;--th-purple-dark:#3f376e;--th-purple-soft:#f0eef8;
@@ -325,6 +327,12 @@
     </header>
 
     <section class="customer-view">
+      <nav class="partner-nav" aria-label="Разделы кабинета">
+        <button class="partner-tab active" type="button" data-partner-view="catalog"><span>◫</span>Каталог</button>
+        <button class="partner-tab" type="button" data-partner-view="orders"><span>▤</span>Мои заказы <b id="activeOrderBadge">1</b></button>
+        <button class="partner-tab" type="button" data-partner-view="delivery"><span>⌂</span>Доставка и профиль</button>
+      </nav>
+      <div class="partner-view active" id="catalogPartnerView" data-partner-panel="catalog">
       <div class="shell">
         <aside class="sidebar">
           <p class="side-title">Категории</p>
@@ -344,6 +352,27 @@
           <div id="cartContent"></div>
         </aside>
       </div>
+      </div>
+
+      <section class="partner-view partner-page" id="ordersPartnerView" data-partner-panel="orders" aria-labelledby="ordersTitle">
+        <div class="partner-page-head"><div><span class="eyebrow dark">Заказы и поставки</span><h1 id="ordersTitle">Мои заказы</h1><p>Статус, доставка, документы и быстрый повтор в одном месте.</p></div><button class="primary" type="button" data-partner-view="catalog">Новый заказ</button></div>
+        <div class="order-overview" id="orderOverview"></div>
+        <div class="partner-card order-history-card">
+          <div class="history-toolbar"><div><h2>История заказов</h2><p>Цены и наличие перепроверяются при повторе</p></div><label class="history-search"><span>⌕</span><input id="historySearch" type="search" placeholder="Номер или товар" aria-label="Поиск по истории заказов"></label></div>
+          <div class="history-filters" id="historyFilters" aria-label="Фильтр заказов"></div>
+          <div class="history-list" id="partnerOrderList"></div>
+        </div>
+      </section>
+
+      <section class="partner-view partner-page" id="deliveryPartnerView" data-partner-panel="delivery" aria-labelledby="deliveryTitle">
+        <div class="partner-page-head"><div><span class="eyebrow dark">Профиль партнёра</span><h1 id="deliveryTitle">Доставка и реквизиты</h1><p>Сохранённые данные подставляются при оформлении следующего заказа.</p></div><span class="demo-tag">Демо-профиль</span></div>
+        <div class="profile-grid">
+          <article class="partner-card profile-card"><div class="card-title-row"><div><span class="card-icon">⌂</span><h2>Основной адрес</h2></div><button class="text-action" type="button" id="editAddressBtn">Изменить</button></div><div id="savedAddressCard"></div></article>
+          <article class="partner-card profile-card"><div class="card-title-row"><div><span class="card-icon">◎</span><h2>Получатель</h2></div><button class="text-action" type="button" id="editRecipientBtn">Изменить</button></div><div id="savedRecipientCard"></div></article>
+          <article class="partner-card profile-card"><div class="card-title-row"><div><span class="card-icon">▤</span><h2>Документы</h2></div></div><p class="profile-lead">Счета, накладные и УПД привязаны к заказам и доступны в их карточках.</p><div class="profile-list"><span><b>ООО «Студия красоты»</b><small>Карточка плательщика · демо</small></span><button class="soft-action" type="button" id="companyCardBtn">Открыть</button></div></article>
+          <article class="partner-card profile-card accent-card"><span class="eyebrow">Поддержка</span><h2>Вопрос по доставке?</h2><p>Менеджер видит номер заказа и сможет уточнить срок, состав поставки или документы.</p><button class="primary light" type="button" id="deliveryHelpBtn">Написать менеджеру</button></article>
+        </div>
+      </section>
       <button class="mobile-cart" id="mobileCartBtn" type="button" aria-label="Открыть корзину"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H7"></path></svg><span class="floating-count" id="floatingCartCount">0</span></button>
     </section>
 
@@ -493,6 +522,7 @@
     document.getElementById('stockWarning').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStock()}};
     render();
   </script>
+  <script src="partner-mvp.js"></script>
 </body>
 </html>
 
