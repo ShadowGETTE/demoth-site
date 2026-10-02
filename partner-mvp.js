@@ -130,6 +130,3 @@
   renderProducts();renderCart();renderPartnerOrders();renderPartnerProfile();
   if(location.hash==='#orders')selectPartnerView('orders');
 })();
-
-
-[executed on device: mikrolab (3a2bcc24-b4fd-4f1f-b3db-4a316e15f5f7)]
