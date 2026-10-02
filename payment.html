@@ -109,7 +109,7 @@
       <div class="summary-head"><h2>Ваш заказ</h2><span id="summaryNumber">№ 1049</span></div>
       <div class="items" id="orderItems"></div>
       <div class="delivery-summary" id="deliverySummary"></div>
-      <div class="totals"><div class="row"><span>Товаров</span><strong id="orderQty">0</strong></div><div class="row total"><span>Итого</span><span id="orderTotal">0 ₽</span></div></div>
+      <div class="totals"><div class="row"><span>Товаров</span><strong id="orderQty">0</strong></div><div class="row"><span>Товары</span><strong id="goodsTotal">0 ₽</strong></div><div class="row"><span>Доставка</span><strong id="deliveryTotal">0 ₽</strong></div><div class="row total"><span>Итого</span><span id="orderTotal">0 ₽</span></div></div>
       <div class="summary-note"><b>Важно:</b> стоимость доставки и финальный срок подтверждаются после резервирования товара.</div>
     </aside>
   </main>
@@ -129,10 +129,12 @@
     document.getElementById('summaryNumber').textContent='№ '+order.number;
     document.getElementById('invoiceOrder').textContent='№ '+order.number;
     document.getElementById('orderQty').textContent=order.qty;
+    document.getElementById('goodsTotal').textContent=money(order.goodsTotal||order.total-(order.deliveryCost||0));
+    document.getElementById('deliveryTotal').textContent=(order.deliveryCost||delivery.deliveryCost)?money(order.deliveryCost||delivery.deliveryCost):'Бесплатно';
     document.getElementById('orderTotal').textContent=money(order.total);
     document.querySelectorAll('[data-total]').forEach(el=>el.textContent=money(order.total));
     document.getElementById('orderItems').innerHTML=order.items.map(item=>`<div class="item"><div><strong>${safe(item.name)}</strong><small>${safe(item.sku)} · ${item.qty} шт.</small></div><span class="item-price">${money(item.price*item.qty)}</span></div>`).join('');
-    document.getElementById('deliverySummary').innerHTML=`<span>Доставка</span><strong>${safe(delivery.method)} · ${safe(delivery.city)}${delivery.city?', ':''}${safe(delivery.address)}</strong><small>${safe(delivery.eta||'Срок уточняется')}</small>`;
+    document.getElementById('deliverySummary').innerHTML=`<span>Доставка</span><strong>${safe(delivery.carrier||delivery.method)} · ${safe(delivery.city)}${delivery.city?', ':''}${safe(delivery.address)}</strong><small>${safe(delivery.shipmentMode||'Единая поставка')} · ${safe(delivery.eta||'Срок уточняется')}</small>`;
 
     let selectedMethod='card';
     const methodText={card:'В рабочей версии откроется защищённая платёжная страница банка. Реальное списание в демонстрации не выполняется.',sbp:'В рабочей версии откроется приложение банка или платёжный QR-код. Текущий QR-код демонстрационный.',invoice:'Сформирован демонстрационный счёт с позициями заказа и суммами в рублях.'};
