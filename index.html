@@ -384,6 +384,21 @@
         <div class="metric"><span>Средний заказ</span><strong>15 535 ₽</strong><small>демонстрационный показатель</small></div>
         <div class="metric"><span>Товары в наличии</span><strong>92%</strong><small>по демо-каталогу</small></div>
       </div>
+      <div class="operations-grid">
+        <article class="owner-block integration-card">
+          <div class="owner-block-head"><div><span class="demo-tag test-tag">Тестовый контур</span><h2>Обмен между системами</h2><span class="quiet">Пример архитектуры — состав систем уточняется после обследования</span></div><button class="secondary" type="button" id="integrationLogBtn">Журнал обмена</button></div>
+          <div class="integration-strip">
+            <div class="system-node"><i class="health-dot"></i><div><b>Учётная система</b><small>товары, цены, остатки и резерв</small></div><span>Работает</span></div>
+            <em>→</em><div class="system-node core"><i class="health-dot"></i><div><b>B2B API</b><small>единая логика заказа</small></div><span>Синхронно</span></div>
+            <em>→</em><div class="system-node"><i class="health-dot"></i><div><b>CRM и доставка</b><small>статусы, менеджер и перевозчик</small></div><span>Работает</span></div>
+          </div>
+          <div class="integration-note"><b>Безопасное обновление</b><span>Изменения сначала проверяются в отдельной тестовой среде, затем публикуются в рабочую.</span></div>
+        </article>
+        <article class="owner-block flow-card">
+          <div class="owner-block-head"><div><h2>Заказ № 1046</h2><span class="quiet">Сквозной процесс поставки</span></div><button class="secondary" type="button" id="flowDetailsBtn">Открыть</button></div>
+          <div class="compact-flow"><div class="flow-step done"><i>✓</i><span><b>Резерв</b><small>2 склада</small></span></div><div class="flow-step done"><i>✓</i><span><b>Сборка</b><small>завершена</small></span></div><div class="flow-step current"><i>3</i><span><b>Перевозчик</b><small>ожидает передачи</small></span></div><div class="flow-step"><i>4</i><span><b>Доставка</b><small>после 14:00</small></span></div></div>
+        </article>
+      </div>
       <div class="owner-grid">
         <div class="owner-block">
           <div class="owner-block-head"><div><h2>Заказы требуют внимания</h2><span class="quiet">Быстрый переход к следующему действию</span></div><button class="secondary" type="button" id="allOrdersBtn">Все заказы</button></div>
