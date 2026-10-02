@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="description" content="Демонстрационная страница выбора способа оплаты B2B-заказа.">
+  <link rel="icon" href="data:,">
   <title>Оплата заказа — B2B кабинет</title>
   <style>
     :root{
@@ -39,6 +40,7 @@
     .primary{width:100%;min-height:52px;margin-top:18px;border:0;border-radius:14px;background:var(--ink);color:white;font-weight:850;box-shadow:0 12px 28px rgba(20,20,24,.16);transition:.18s ease}.primary:hover{transform:translateY(-1px);background:#29282d}.primary:focus{outline:4px solid rgba(97,85,214,.16)}
     .sbp-grid{display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:center}.qr{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;background:white;border:10px solid white;box-shadow:0 8px 28px rgba(25,22,42,.08);overflow:hidden}.qr svg{width:100%;height:100%}.sbp-copy ol{margin:10px 0 0;padding-left:20px;color:var(--muted);font-size:14px}.sbp-copy li+li{margin-top:5px}
     .invoice-card{display:grid;gap:13px;padding:18px;border-radius:17px;background:white;border:1px solid var(--line)}.invoice-row{display:flex;justify-content:space-between;gap:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}.invoice-row:last-child{padding:0;border:0}.invoice-row span{color:var(--muted);font-size:13px}.invoice-row strong{text-align:right;font-size:14px}
+    .delivery-summary{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fafaf8}.delivery-summary span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}.delivery-summary strong{display:block;margin-top:4px;font-size:13px}.delivery-summary small{display:block;margin-top:4px;color:var(--muted)}
     .summary-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.summary-head span{color:var(--muted);font-size:13px}.items{display:grid;gap:13px}.item{display:grid;grid-template-columns:1fr auto;gap:12px;padding-bottom:13px;border-bottom:1px solid var(--line)}.item strong{font-size:14px;line-height:1.3}.item small{display:block;margin-top:4px;color:var(--muted)}.item-price{font-weight:800;white-space:nowrap;font-size:14px}
     .totals{display:grid;gap:9px;margin-top:16px}.row{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px}.row.total{margin-top:5px;padding-top:15px;border-top:1px solid var(--line);font-size:22px;font-weight:900;color:var(--ink)}
     .summary-note{margin-top:17px;padding:13px;border-radius:13px;background:#f4f3ef;color:var(--muted);font-size:12px}.summary-note b{color:var(--ink)}
@@ -50,10 +52,10 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="back" href="index.html"><span>←</span>Вернуться в каталог</a>
+    <a class="back" href="delivery.html"><span>←</span>Вернуться к доставке</a>
     <div class="steps" aria-label="Этапы оформления">
       <span class="step done"><b>✓</b>Корзина</span><i class="step-line"></i>
-      <span class="step done"><b>✓</b>Оформление</span><i class="step-line"></i>
+      <span class="step done"><b>✓</b>Доставка</span><i class="step-line"></i>
       <span class="step active"><b>3</b>Оплата</span>
     </div>
   </header>
@@ -62,7 +64,7 @@
     <section class="checkout">
       <span class="order-label" id="orderLabel">Заказ № 1049</span>
       <h1>Выберите способ оплаты</h1>
-      <p class="lead">Сумма заказа уже зафиксирована. Выберите удобный вариант — способ можно изменить до подтверждения.</p>
+      <p class="lead">Товары, склады и доставка уже выбраны. Осталось определить удобный способ оплаты.</p>
 
       <div class="method-list" role="tablist" aria-label="Способы оплаты">
         <button class="method active" type="button" role="tab" aria-selected="true" data-method="card"><span class="method-icon">▰</span><strong>Банковская карта</strong><small>Быстро и безопасно</small></button>
@@ -106,8 +108,9 @@
     <aside class="summary">
       <div class="summary-head"><h2>Ваш заказ</h2><span id="summaryNumber">№ 1049</span></div>
       <div class="items" id="orderItems"></div>
+      <div class="delivery-summary" id="deliverySummary"></div>
       <div class="totals"><div class="row"><span>Товаров</span><strong id="orderQty">0</strong></div><div class="row total"><span>Итого</span><span id="orderTotal">0 ₽</span></div></div>
-      <div class="summary-note"><b>Важно:</b> доставка, НДС и условия оплаты будут рассчитываться по согласованным правилам поставщика.</div>
+      <div class="summary-note"><b>Важно:</b> стоимость доставки и финальный срок подтверждаются после резервирования товара.</div>
     </aside>
   </main>
 
@@ -119,6 +122,7 @@
     const fallback={number:'1049',items:[{name:'Лампа для маникюра RAY',sku:'RAY-LAMP-01',price:6490,qty:1}],qty:1,total:6490};
     let order=fallback;
     try{const saved=JSON.parse(localStorage.getItem('b2bDemoOrder'));if(saved&&Array.isArray(saved.items)&&saved.total>=3000)order=saved}catch(e){}
+    let delivery={method:'Курьерская доставка',address:'Адрес уточняется',city:'',eta:'Срок уточняется'};try{delivery={...delivery,...JSON.parse(localStorage.getItem('b2bDemoDelivery')||'{}'),...(order.delivery||{})}}catch(e){}
     const money=n=>new Intl.NumberFormat('ru-RU').format(n)+' ₽';
     const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     document.getElementById('orderLabel').textContent='Заказ № '+order.number;
@@ -128,15 +132,17 @@
     document.getElementById('orderTotal').textContent=money(order.total);
     document.querySelectorAll('[data-total]').forEach(el=>el.textContent=money(order.total));
     document.getElementById('orderItems').innerHTML=order.items.map(item=>`<div class="item"><div><strong>${safe(item.name)}</strong><small>${safe(item.sku)} · ${item.qty} шт.</small></div><span class="item-price">${money(item.price*item.qty)}</span></div>`).join('');
+    document.getElementById('deliverySummary').innerHTML=`<span>Доставка</span><strong>${safe(delivery.method)} · ${safe(delivery.city)}${delivery.city?', ':''}${safe(delivery.address)}</strong><small>${safe(delivery.eta||'Срок уточняется')}</small>`;
 
     let selectedMethod='card';
     const methodText={card:'В рабочей версии откроется защищённая платёжная страница банка. Реальное списание в демонстрации не выполняется.',sbp:'В рабочей версии откроется приложение банка или платёжный QR-код. Текущий QR-код демонстрационный.',invoice:'Сформирован демонстрационный счёт с позициями заказа и суммами в рублях.'};
     document.querySelectorAll('[data-method]').forEach(button=>button.onclick=()=>{selectedMethod=button.dataset.method;document.querySelectorAll('[data-method]').forEach(el=>{const active=el===button;el.classList.toggle('active',active);el.setAttribute('aria-selected',active)});document.querySelectorAll('[data-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.panel===selectedMethod))});
-    const showResult=()=>{if(selectedMethod==='invoice'){localStorage.setItem('b2bDemoOrder',JSON.stringify(order));location.href='invoice.html';return}document.getElementById('successText').textContent=methodText[selectedMethod];document.getElementById('success').classList.add('show');document.body.style.overflow='hidden'};
+    const saveHistory=()=>{let history=[];try{history=JSON.parse(localStorage.getItem('b2bDemoHistory'))||[]}catch(e){}const methodNames={card:'Банковская карта',sbp:'СБП',invoice:'Расчётный счёт'},status=selectedMethod==='invoice'?'Ожидает оплаты':'Принят в работу',statusKey=selectedMethod==='invoice'?'payment':'active',entry={...order,date:new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(new Date()),iso:new Date().toISOString().slice(0,10),status,statusKey,payment:methodNames[selectedMethod],delivery:{...delivery,address:[delivery.city,delivery.address].filter(Boolean).join(', '),track:'Будет присвоен после отгрузки'},timeline:selectedMethod==='invoice'?2:2,documents:selectedMethod==='invoice'?[`Счёт № DEMO-${order.number}`]:['Подтверждение заказа · демо']};history=[entry,...history.filter(item=>item.number!==entry.number)];localStorage.setItem('b2bDemoHistory',JSON.stringify(history));};
+    const showResult=()=>{saveHistory();if(selectedMethod==='invoice'){localStorage.setItem('b2bDemoOrder',JSON.stringify({...order,delivery}));location.href='invoice.html';return}document.getElementById('successText').textContent=methodText[selectedMethod]+' Заказ сохранён в истории, где будет доступно отслеживание.';document.getElementById('success').classList.add('show');document.body.style.overflow='hidden'};
     const closeResult=()=>{document.getElementById('success').classList.remove('show');document.body.style.overflow=''};
     document.querySelectorAll('.pay-action').forEach(button=>button.onclick=showResult);
     document.getElementById('closeSuccess').onclick=closeResult;
-    document.getElementById('backToOrder').onclick=()=>location.href='index.html';
+    document.getElementById('backToOrder').onclick=()=>location.href='index.html#orders';
     document.getElementById('success').onclick=e=>{if(e.target.id==='success')closeResult()};
     document.addEventListener('keydown',e=>{if(e.key==='Escape')closeResult()});
   </script>
